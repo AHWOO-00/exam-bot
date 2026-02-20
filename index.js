@@ -18,10 +18,10 @@ app.post("/exam", async (req, res) => {
     const embed = {
         title: data.title,
         description: `
+**작성자:** ${data.officerName}
+**대상 계급:** ${data.targetRanks.join(", ")}
 **시험 시작 시간:** ${data.startTime}
 **시험 패드:** ${data.padName}
-**대상 계급:** ${data.targetRanks.join(", ")}
-**작성자:** ${data.officerName}
         `,
         color: 0x3498db
     };
