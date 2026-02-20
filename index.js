@@ -45,31 +45,23 @@ app.post("/exam", async (req, res) => {
     // 멘션 변환
     const mentions = data.targetRanks.map(rank => roleMentions[rank] || rank).join(" ");
 
-    // 디스코드 임베드 메시지 구성
-    const embed = {
-        title: data.title,
-        description: `
-**작성자:** ${data.officerName}
-**대상 계급:** ${mentions}
-**시험 시작 시간:** ${data.startTime}
-**시험 패드:** ${data.padName}
-        `,
-        color: 0x3498db
-    };
+const content = `${data.title}
+작성자: ${data.officerName}
+대상 계급: ${mentions}
+시험 시작 시간: ${data.startTime}
+시험 패드: ${data.padName}`;
 
-    // 웹훅 전송
-    try {
-        await fetch(DISCORD_WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ embeds: [embed] })
-        });
-        res.send("Success");
-    } catch (err) {
-        console.error("Discord webhook error:", err);
-        res.status(500).send("Failed to send Discord message");
-    }
-});
+try {
+    await fetch(DISCORD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content }) // 여기만 바꿨음
+    });
+    res.send("Success");
+} catch (err) {
+    console.error("Discord webhook error:", err);
+    res.status(500).send("Failed to send Discord message");
+}
 
 // ===== 서버 포트 =====
 const PORT = process.env.PORT || 3000;
