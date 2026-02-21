@@ -4,9 +4,9 @@ const app = express();
 
 app.use(express.json());
 
-// 🔥 여기다 적는 거임
 const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1474385736861089867/OJ10J_f0XRiD9XMKDN44SWueXRCGT1Sp-1opKVn-T_WZjBsAp2W8bASVQJWzy0XO1sA1";
 const SECRET_KEY = "hyunzz091800";
+
 const roleMentions = {
     "훈련병": "<@&1469254877325819977>",
     "이병": "<@&1469254992866050191>",
@@ -28,6 +28,7 @@ const roleMentions = {
     "부사관": "<@&1469257781520367730>",
     "사관생도": "<@&1469257883739754668>"
 };
+
 app.post("/exam", async (req, res) => {
     const data = req.body;
 
@@ -35,7 +36,6 @@ app.post("/exam", async (req, res) => {
         return res.status(403).send("Unauthorized");
     }
 
-    // 문자열/배열 모두 처리
     let ranksArray = [];
 
     if (Array.isArray(data.targetRanks)) {
@@ -60,7 +60,7 @@ app.post("/exam", async (req, res) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                content: mentions, // 🔥 멘션은 여기 (밖에 표시됨)
+                content: mentions,
                 embeds: [
                     {
                         title: data.title,
@@ -80,4 +80,9 @@ app.post("/exam", async (req, res) => {
         console.error(err);
         res.status(500).send("Failed");
     }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
