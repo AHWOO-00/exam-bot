@@ -32,6 +32,8 @@ const roleMentions = {
 app.post("/exam", async (req, res) => {
     const data = req.body;
 
+    console.log("받은 targetRanks:", data.targetRanks);
+
     if (data.key !== SECRET_KEY) {
         return res.status(403).send("Unauthorized");
     }
